@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect><x>0</x><y>0</y><width>1280</width><height>860</height></rect>
+  </property>
+  <property name="minimumSize">
+   <size><width>980</width><height>640</height></size>
+  </property>
+  <property name="windowTitle">
+   <string>MyTaskManager — процеси і потоки</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc"><normaloff>:/icons/app.svg</normaloff>:/icons/app.svg</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="centralLayout">
+    <property name="spacing"><number>0</number></property>
+    <property name="leftMargin"><number>0</number></property>
+    <property name="topMargin"><number>0</number></property>
+    <property name="rightMargin"><number>0</number></property>
+    <property name="bottomMargin"><number>0</number></property>
+    <item>
+     <widget class="QFrame" name="toolBarFrame">
+      <property name="role" stdset="0"><string>bar</string></property>
+      <layout class="QHBoxLayout" name="toolBarLayout">
+       <property name="spacing"><number>8</number></property>
+       <property name="leftMargin"><number>12</number></property>
+       <property name="topMargin"><number>8</number></property>
+       <property name="rightMargin"><number>12</number></property>
+       <property name="bottomMargin"><number>8</number></property>
+       <item>
+        <widget class="QPushButton" name="btnLaunch">
+         <property name="text"><string>Запустити процес</string></property>
+         <property name="toolTip"><string>Запустити новий процес (CreateProcessW)</string></property>
+         <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/rocket-white.svg</normaloff>:/icons/rocket-white.svg</iconset></property>
+         <property name="primary" stdset="0"><bool>true</bool></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnRefresh">
+         <property name="text"><string>Оновити</string></property>
+         <property name="toolTip"><string>Оновити дані зараз (F5)</string></property>
+         <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/refresh.svg</normaloff>:/icons/refresh.svg</iconset></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkAutoRefresh">
+         <property name="text"><string>Автооновлення</string></property>
+         <property name="checked"><bool>true</bool></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="spinInterval">
+         <property name="toolTip"><string>Інтервал автооновлення</string></property>
+         <property name="suffix"><string> с</string></property>
+         <property name="minimum"><number>1</number></property>
+         <property name="maximum"><number>60</number></property>
+         <property name="value"><number>5</number></property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="toolBarSpacer">
+         <property name="orientation"><enum>Qt::Horizontal</enum></property>
+         <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblLastUpdate">
+         <property name="text"><string>Ще не оновлено</string></property>
+         <property name="muted" stdset="0"><bool>true</bool></property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="filterFrame">
+      <property name="role" stdset="0"><string>bar</string></property>
+      <layout class="QHBoxLayout" name="filterLayout">
+       <property name="spacing"><number>14</number></property>
+       <property name="leftMargin"><number>12</number></property>
+       <property name="topMargin"><number>6</number></property>
+       <property name="rightMargin"><number>12</number></property>
+       <property name="bottomMargin"><number>6</number></property>
+       <item>
+        <widget class="QCheckBox" name="chkHideSystem">
+         <property name="text"><string>Приховати системні</string></property>
+         <property name="toolTip"><string>Власник LocalSystem, LocalService, NetworkService, а також PID 0 і 4</string></property>
+         <property name="checked"><bool>true</bool></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkOnlySelected">
+         <property name="text"><string>Лише обраний PID</string></property>
+         <property name="toolTip"><string>Має пріоритет над іншими фільтрами</string></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chkShowThreads">
+         <property name="text"><string>Показати потоки</string></property>
+         <property name="checked"><bool>true</bool></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="editSearch">
+         <property name="minimumSize"><size><width>220</width><height>0</height></size></property>
+         <property name="placeholderText"><string>Пошук за назвою або PID</string></property>
+         <property name="clearButtonEnabled"><bool>true</bool></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnResetFilters">
+         <property name="text"><string>Скинути фільтри</string></property>
+         <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/filter-off.svg</normaloff>:/icons/filter-off.svg</iconset></property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="filterSpacer">
+         <property name="orientation"><enum>Qt::Horizontal</enum></property>
+         <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSplitter" name="mainSplitter">
+      <property name="orientation"><enum>Qt::Vertical</enum></property>
+      <property name="childrenCollapsible"><bool>false</bool></property>
+      <property name="handleWidth"><number>6</number></property>
+      <widget class="QWidget" name="processPane">
+       <layout class="QVBoxLayout" name="processPaneLayout">
+        <property name="spacing"><number>0</number></property>
+        <property name="leftMargin"><number>0</number></property>
+        <property name="topMargin"><number>0</number></property>
+        <property name="rightMargin"><number>0</number></property>
+        <property name="bottomMargin"><number>0</number></property>
+        <item>
+         <widget class="QTableWidget" name="tblProcesses">
+          <property name="contextMenuPolicy"><enum>Qt::CustomContextMenu</enum></property>
+          <property name="editTriggers"><set>QAbstractItemView::NoEditTriggers</set></property>
+          <property name="selectionMode"><enum>QAbstractItemView::SingleSelection</enum></property>
+          <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>
+          <property name="showGrid"><bool>false</bool></property>
+          <property name="sortingEnabled"><bool>true</bool></property>
+          <property name="wordWrap"><bool>false</bool></property>
+          <property name="cornerButtonEnabled"><bool>false</bool></property>
+          <attribute name="horizontalHeaderHighlightSections"><bool>false</bool></attribute>
+          <attribute name="horizontalHeaderStretchLastSection"><bool>true</bool></attribute>
+          <attribute name="verticalHeaderVisible"><bool>false</bool></attribute>
+          <column><property name="text"><string>PID</string></property></column>
+          <column><property name="text"><string>Назва</string></property></column>
+          <column><property name="text"><string>CPU, %</string></property></column>
+          <column><property name="text"><string>Пріоритет</string></property></column>
+          <column><property name="text"><string>Стан</string></property></column>
+          <column><property name="text"><string>WS, МіБ</string></property></column>
+          <column><property name="text"><string>VA, МіБ</string></property></column>
+          <column><property name="text"><string>Private, МіБ</string></property></column>
+          <column><property name="text"><string>Потоки</string></property></column>
+          <column><property name="text"><string>Власник</string></property></column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="procActionBar">
+          <property name="role" stdset="0"><string>actionBar</string></property>
+          <layout class="QHBoxLayout" name="procActionLayout">
+           <property name="spacing"><number>6</number></property>
+           <property name="leftMargin"><number>12</number></property>
+           <property name="topMargin"><number>6</number></property>
+           <property name="rightMargin"><number>12</number></property>
+           <property name="bottomMargin"><number>6</number></property>
+           <item>
+            <widget class="QLabel" name="lblProcTitle">
+             <property name="text"><string>Процес не обрано</string></property>
+             <property name="title" stdset="0"><bool>true</bool></property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="procActionSpacer">
+             <property name="orientation"><enum>Qt::Horizontal</enum></property>
+             <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnProcPriority">
+             <property name="text"><string>Пріоритет</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/arrows-up-down.svg</normaloff>:/icons/arrows-up-down.svg</iconset></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnProcAffinity">
+             <property name="text"><string>Affinity</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/cpu-2.svg</normaloff>:/icons/cpu-2.svg</iconset></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnProcSuspend">
+             <property name="text"><string>Призупинити</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/player-pause.svg</normaloff>:/icons/player-pause.svg</iconset></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnProcResume">
+             <property name="text"><string>Відновити</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/player-play.svg</normaloff>:/icons/player-play.svg</iconset></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnProcTerminate">
+             <property name="text"><string>Завершити</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/terminate.svg</normaloff>:/icons/terminate.svg</iconset></property>
+             <property name="danger" stdset="0"><bool>true</bool></property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="procDetailsBar">
+          <property name="role" stdset="0"><string>detailsBar</string></property>
+          <layout class="QHBoxLayout" name="procDetailsLayout">
+           <property name="spacing"><number>24</number></property>
+           <property name="leftMargin"><number>12</number></property>
+           <property name="topMargin"><number>5</number></property>
+           <property name="rightMargin"><number>12</number></property>
+           <property name="bottomMargin"><number>5</number></property>
+           <item><widget class="QLabel" name="lblProcPath"><property name="text"><string>Шлях: —</string></property><property name="textInteractionFlags"><set>Qt::TextSelectableByMouse</set></property></widget></item>
+           <item><widget class="QLabel" name="lblProcCreated"><property name="text"><string>Створено: —</string></property></widget></item>
+           <item><widget class="QLabel" name="lblProcMask"><property name="text"><string>Маска процесу: —</string></property></widget></item>
+           <item><widget class="QLabel" name="lblProcHandle"><property name="text"><string/></property></widget></item>
+           <item>
+            <spacer name="procDetailsSpacer">
+             <property name="orientation"><enum>Qt::Horizontal</enum></property>
+             <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="threadPane">
+       <layout class="QVBoxLayout" name="threadPaneLayout">
+        <property name="spacing"><number>0</number></property>
+        <property name="leftMargin"><number>0</number></property>
+        <property name="topMargin"><number>0</number></property>
+        <property name="rightMargin"><number>0</number></property>
+        <property name="bottomMargin"><number>0</number></property>
+        <item>
+         <widget class="QFrame" name="thrActionBar">
+          <property name="role" stdset="0"><string>actionBar</string></property>
+          <layout class="QHBoxLayout" name="thrActionLayout">
+           <property name="spacing"><number>6</number></property>
+           <property name="leftMargin"><number>12</number></property>
+           <property name="topMargin"><number>6</number></property>
+           <property name="rightMargin"><number>12</number></property>
+           <property name="bottomMargin"><number>6</number></property>
+           <item>
+            <widget class="QLabel" name="lblThrTitle">
+             <property name="text"><string>Потоки</string></property>
+             <property name="title" stdset="0"><bool>true</bool></property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="thrActionSpacer">
+             <property name="orientation"><enum>Qt::Horizontal</enum></property>
+             <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnThrPriority">
+             <property name="text"><string>Пріоритет</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/arrows-up-down.svg</normaloff>:/icons/arrows-up-down.svg</iconset></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnThrAffinity">
+             <property name="text"><string>Affinity</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/cpu-2.svg</normaloff>:/icons/cpu-2.svg</iconset></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnThrSuspend">
+             <property name="text"><string>Призупинити</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/player-pause.svg</normaloff>:/icons/player-pause.svg</iconset></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnThrResume">
+             <property name="text"><string>Відновити</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/player-play.svg</normaloff>:/icons/player-play.svg</iconset></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnThrTerminate">
+             <property name="text"><string>Завершити потік</string></property>
+             <property name="toolTip"><string>Демонстраційно: лише для власного MyWorker.exe</string></property>
+             <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/terminate.svg</normaloff>:/icons/terminate.svg</iconset></property>
+             <property name="danger" stdset="0"><bool>true</bool></property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tblThreads">
+          <property name="contextMenuPolicy"><enum>Qt::CustomContextMenu</enum></property>
+          <property name="editTriggers"><set>QAbstractItemView::NoEditTriggers</set></property>
+          <property name="selectionMode"><enum>QAbstractItemView::SingleSelection</enum></property>
+          <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>
+          <property name="showGrid"><bool>false</bool></property>
+          <property name="sortingEnabled"><bool>true</bool></property>
+          <property name="wordWrap"><bool>false</bool></property>
+          <property name="cornerButtonEnabled"><bool>false</bool></property>
+          <attribute name="horizontalHeaderHighlightSections"><bool>false</bool></attribute>
+          <attribute name="horizontalHeaderStretchLastSection"><bool>true</bool></attribute>
+          <attribute name="verticalHeaderVisible"><bool>false</bool></attribute>
+          <column><property name="text"><string>Робота</string></property></column>
+          <column><property name="text"><string>TID</string></property></column>
+          <column><property name="text"><string>PID</string></property></column>
+          <column><property name="text"><string>CPU, %</string></property></column>
+          <column><property name="text"><string>Відносний пріоритет</string></property></column>
+          <column><property name="text"><string>Базовий</string></property></column>
+          <column><property name="text"><string>Час CPU</string></property></column>
+          <column><property name="text"><string>Affinity</string></property></column>
+          <column><property name="text"><string>Стан</string></property></column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="logPane">
+       <layout class="QVBoxLayout" name="logPaneLayout">
+        <property name="spacing"><number>0</number></property>
+        <property name="leftMargin"><number>0</number></property>
+        <property name="topMargin"><number>0</number></property>
+        <property name="rightMargin"><number>0</number></property>
+        <property name="bottomMargin"><number>0</number></property>
+        <item>
+         <widget class="QFrame" name="logHeader">
+          <property name="role" stdset="0"><string>actionBar</string></property>
+          <layout class="QHBoxLayout" name="logHeaderLayout">
+           <property name="leftMargin"><number>12</number></property>
+           <property name="topMargin"><number>6</number></property>
+           <property name="rightMargin"><number>12</number></property>
+           <property name="bottomMargin"><number>6</number></property>
+           <item>
+            <widget class="QLabel" name="lblLogTitle">
+             <property name="text"><string>Журнал операцій</string></property>
+             <property name="title" stdset="0"><bool>true</bool></property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="logSpacer">
+             <property name="orientation"><enum>Qt::Horizontal</enum></property>
+             <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnClearLog">
+             <property name="text"><string>Очистити</string></property>
+             <property name="flat" stdset="0"><bool>true</bool></property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="lstLog">
+          <property name="selectionMode"><enum>QAbstractItemView::ExtendedSelection</enum></property>
+          <property name="uniformItemSizes"><bool>true</bool></property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry"><rect><x>0</x><y>0</y><width>1280</width><height>24</height></rect></property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title"><string>Файл</string></property>
+    <addaction name="actionLaunch"/>
+    <addaction name="actionRefresh"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuProcess">
+    <property name="title"><string>Процес</string></property>
+    <addaction name="actionProcPriority"/>
+    <addaction name="actionProcAffinity"/>
+    <addaction name="separator"/>
+    <addaction name="actionProcSuspend"/>
+    <addaction name="actionProcResume"/>
+    <addaction name="separator"/>
+    <addaction name="actionOnlyThisPid"/>
+    <addaction name="actionProcTerminate"/>
+   </widget>
+   <widget class="QMenu" name="menuThread">
+    <property name="title"><string>Потік</string></property>
+    <addaction name="actionThrPriority"/>
+    <addaction name="actionThrAffinity"/>
+    <addaction name="separator"/>
+    <addaction name="actionThrSuspend"/>
+    <addaction name="actionThrResume"/>
+    <addaction name="separator"/>
+    <addaction name="actionThrTerminate"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title"><string>Вигляд</string></property>
+    <addaction name="actionHideSystem"/>
+    <addaction name="actionOnlySelected"/>
+    <addaction name="actionShowThreads"/>
+    <addaction name="actionResetFilters"/>
+    <addaction name="separator"/>
+    <addaction name="actionAutoRefresh"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title"><string>Довідка</string></property>
+    <addaction name="actionStatesLegend"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuProcess"/>
+   <addaction name="menuThread"/>
+   <addaction name="menuView"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLaunch">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/rocket.svg</normaloff>:/icons/rocket.svg</iconset></property>
+   <property name="text"><string>Запустити процес…</string></property>
+   <property name="shortcut"><string>Ctrl+N</string></property>
+  </action>
+  <action name="actionRefresh">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/refresh.svg</normaloff>:/icons/refresh.svg</iconset></property>
+   <property name="text"><string>Оновити</string></property>
+   <property name="shortcut"><string>F5</string></property>
+  </action>
+  <action name="actionExit">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/logout.svg</normaloff>:/icons/logout.svg</iconset></property>
+   <property name="text"><string>Вихід</string></property>
+   <property name="shortcut"><string>Alt+F4</string></property>
+  </action>
+  <action name="actionProcPriority">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/arrows-up-down.svg</normaloff>:/icons/arrows-up-down.svg</iconset></property>
+   <property name="text"><string>Пріоритет процесу…</string></property>
+  </action>
+  <action name="actionProcAffinity">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/cpu-2.svg</normaloff>:/icons/cpu-2.svg</iconset></property>
+   <property name="text"><string>Відповідність CPU…</string></property>
+  </action>
+  <action name="actionProcSuspend">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/player-pause.svg</normaloff>:/icons/player-pause.svg</iconset></property>
+   <property name="text"><string>Призупинити всі потоки</string></property>
+  </action>
+  <action name="actionProcResume">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/player-play.svg</normaloff>:/icons/player-play.svg</iconset></property>
+   <property name="text"><string>Відновити</string></property>
+  </action>
+  <action name="actionOnlyThisPid">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/eye.svg</normaloff>:/icons/eye.svg</iconset></property>
+   <property name="text"><string>Показати лише цей PID</string></property>
+  </action>
+  <action name="actionProcTerminate">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/terminate.svg</normaloff>:/icons/terminate.svg</iconset></property>
+   <property name="text"><string>Завершити процес…</string></property>
+   <property name="shortcut"><string>Del</string></property>
+  </action>
+  <action name="actionThrPriority">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/arrows-up-down.svg</normaloff>:/icons/arrows-up-down.svg</iconset></property>
+   <property name="text"><string>Пріоритет потоку…</string></property>
+  </action>
+  <action name="actionThrAffinity">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/cpu-2.svg</normaloff>:/icons/cpu-2.svg</iconset></property>
+   <property name="text"><string>Відповідність CPU потоку…</string></property>
+  </action>
+  <action name="actionThrSuspend">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/player-pause.svg</normaloff>:/icons/player-pause.svg</iconset></property>
+   <property name="text"><string>Призупинити потік</string></property>
+  </action>
+  <action name="actionThrResume">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/player-play.svg</normaloff>:/icons/player-play.svg</iconset></property>
+   <property name="text"><string>Відновити потік</string></property>
+  </action>
+  <action name="actionThrTerminate">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/terminate.svg</normaloff>:/icons/terminate.svg</iconset></property>
+   <property name="text"><string>Завершити потік (демо)…</string></property>
+  </action>
+  <action name="actionHideSystem">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="checked"><bool>true</bool></property>
+   <property name="text"><string>Приховати системні</string></property>
+  </action>
+  <action name="actionOnlySelected">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>Лише обраний PID</string></property>
+  </action>
+  <action name="actionShowThreads">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="checked"><bool>true</bool></property>
+   <property name="text"><string>Показати потоки</string></property>
+  </action>
+  <action name="actionResetFilters">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/filter-off.svg</normaloff>:/icons/filter-off.svg</iconset></property>
+   <property name="text"><string>Скинути фільтри</string></property>
+  </action>
+  <action name="actionAutoRefresh">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="checked"><bool>true</bool></property>
+   <property name="text"><string>Автооновлення</string></property>
+  </action>
+  <action name="actionStatesLegend">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/list.svg</normaloff>:/icons/list.svg</iconset></property>
+   <property name="text"><string>Позначення станів</string></property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/info-circle.svg</normaloff>:/icons/info-circle.svg</iconset></property>
+   <property name="text"><string>Про програму</string></property>
+  </action>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

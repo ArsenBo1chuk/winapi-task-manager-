@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LaunchDialog</class>
+ <widget class="QDialog" name="LaunchDialog">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>560</width><height>300</height></rect></property>
+  <property name="windowTitle"><string>Запуск нового процесу</string></property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing"><number>10</number></property>
+   <property name="leftMargin"><number>18</number></property>
+   <property name="topMargin"><number>16</number></property>
+   <property name="rightMargin"><number>18</number></property>
+   <property name="bottomMargin"><number>14</number></property>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="horizontalSpacing"><number>12</number></property>
+     <property name="verticalSpacing"><number>10</number></property>
+     <item row="0" column="0"><widget class="QLabel" name="lblExe"><property name="text"><string>Виконуваний файл</string></property></widget></item>
+     <item row="0" column="1">
+      <layout class="QHBoxLayout" name="exeLayout">
+       <item><widget class="QLineEdit" name="editExe"><property name="placeholderText"><string>C:\Lab2\MyWorker.exe</string></property></widget></item>
+       <item><widget class="QPushButton" name="btnBrowseExe"><property name="text"><string>Огляд…</string></property>
+        <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/file.svg</normaloff>:/icons/file.svg</iconset></property></widget></item>
+      </layout>
+     </item>
+     <item row="1" column="0"><widget class="QLabel" name="lblArgs"><property name="text"><string>Аргументи</string></property></widget></item>
+     <item row="1" column="1"><widget class="QLineEdit" name="editArgs"><property name="placeholderText"><string>--threads 4 --repeat 20</string></property></widget></item>
+     <item row="2" column="0"><widget class="QLabel" name="lblDir"><property name="text"><string>Робочий каталог</string></property></widget></item>
+     <item row="2" column="1">
+      <layout class="QHBoxLayout" name="dirLayout">
+       <item><widget class="QLineEdit" name="editWorkDir"><property name="placeholderText"><string>Порожньо — каталог диспетчера</string></property></widget></item>
+       <item><widget class="QPushButton" name="btnBrowseDir"><property name="text"><string>Огляд…</string></property>
+        <property name="icon"><iconset resource="resources.qrc"><normaloff>:/icons/folder-open.svg</normaloff>:/icons/folder-open.svg</iconset></property></widget></item>
+      </layout>
+     </item>
+     <item row="3" column="1"><widget class="QCheckBox" name="chkSuspended"><property name="text"><string>Створити призупиненим (CREATE_SUSPENDED)</string></property>
+      <property name="toolTip"><string>Первинний потік зупиниться до запуску main — робочих потоків ще не буде</string></property></widget></item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblCmdPreview">
+     <property name="text"><string>Командний рядок: —</string></property>
+     <property name="wordWrap"><bool>true</bool></property>
+     <property name="textInteractionFlags"><set>Qt::TextSelectableByMouse</set></property>
+     <property name="role" stdset="0"><string>preview</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblError">
+     <property name="text"><string/></property>
+     <property name="wordWrap"><bool>true</bool></property>
+     <property name="role" stdset="0"><string>error</string></property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="vSpacer"><property name="orientation"><enum>Qt::Vertical</enum></property>
+     <property name="sizeHint" stdset="0"><size><width>20</width><height>4</height></size></property></spacer>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons"><set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set></property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources><include location="resources.qrc"/></resources>
+ <connections/>
+</ui>

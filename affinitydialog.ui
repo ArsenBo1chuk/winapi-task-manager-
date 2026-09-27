@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AffinityDialog</class>
+ <widget class="QDialog" name="AffinityDialog">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>440</width><height>300</height></rect></property>
+  <property name="windowTitle"><string>Відповідність CPU</string></property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing"><number>10</number></property>
+   <property name="leftMargin"><number>18</number></property>
+   <property name="topMargin"><number>16</number></property>
+   <property name="rightMargin"><number>18</number></property>
+   <property name="bottomMargin"><number>14</number></property>
+   <item><widget class="QLabel" name="lblTarget"><property name="text"><string>Об'єкт</string></property><property name="title" stdset="0"><bool>true</bool></property></widget></item>
+   <item><widget class="QLabel" name="lblAllowed">
+    <property name="text"><string>Дозволено: —</string></property>
+    <property name="wordWrap"><bool>true</bool></property><property name="muted" stdset="0"><bool>true</bool></property></widget></item>
+   <item>
+    <widget class="QGroupBox" name="grpCpus">
+     <property name="title"><string>Логічні процесори</string></property>
+     <layout class="QGridLayout" name="cpuGrid"><property name="horizontalSpacing"><number>14</number></property><property name="verticalSpacing"><number>8</number></property></layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="quickLayout">
+     <item><widget class="QPushButton" name="btnSelectAll"><property name="text"><string>Усі дозволені</string></property></widget></item>
+     <item><widget class="QPushButton" name="btnSelectNone"><property name="text"><string>Зняти всі</string></property></widget></item>
+     <item><spacer name="quickSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property>
+      <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+     <item><widget class="QLabel" name="lblMaskHex"><property name="text"><string>Маска: 0x0</string></property><property name="muted" stdset="0"><bool>true</bool></property></widget></item>
+    </layout>
+   </item>
+   <item><widget class="QLabel" name="lblHint">
+    <property name="text"><string>Це обмеження місця виконання, а не виділення ядра у виключне користування.</string></property>
+    <property name="wordWrap"><bool>true</bool></property><property name="muted" stdset="0"><bool>true</bool></property></widget></item>
+   <item><widget class="QLabel" name="lblError"><property name="text"><string/></property><property name="role" stdset="0"><string>error</string></property></widget></item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons"><set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set></property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

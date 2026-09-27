@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/app.svg</file>
+        <file>icons/arrows-up-down.svg</file>
+        <file>icons/check-white.svg</file>
+        <file>icons/chevron-down.svg</file>
+        <file>icons/chevron-up.svg</file>
+        <file>icons/cpu-2.svg</file>
+        <file>icons/eye.svg</file>
+        <file>icons/file.svg</file>
+        <file>icons/filter-off.svg</file>
+        <file>icons/flag.svg</file>
+        <file>icons/folder-open.svg</file>
+        <file>icons/info-circle.svg</file>
+        <file>icons/list.svg</file>
+        <file>icons/logout.svg</file>
+        <file>icons/player-pause.svg</file>
+        <file>icons/player-play.svg</file>
+        <file>icons/refresh.svg</file>
+        <file>icons/rocket.svg</file>
+        <file>icons/rocket-white.svg</file>
+        <file>icons/search.svg</file>
+        <file>icons/server.svg</file>
+        <file>icons/terminate.svg</file>
+        <file>style/style.qss</file>
+    </qresource>
+</RCC>
