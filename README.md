@@ -3,10 +3,6 @@
 A process and thread manager for Windows, written in C++ with a Qt user interface.
 All system operations are performed directly through the **Windows API**, without `tasklist`, `taskkill`, PowerShell, or WMI.
 
-Lab work #2 for the Operating Systems course at Lviv Polytechnic National University.
-
-![MyTaskManager main window](docs/screenshot.png)
-
 ## Features
 
 **Monitoring**
@@ -26,16 +22,6 @@ Lab work #2 for the Operating Systems course at Lviv Polytechnic National Univer
 - Filters: "Hide system processes", "Selected PID only", and search by name or PID.
 - Operation log with the result and error code of every action.
 - Context menus in both tables.
-
-## Project structure
-
-```
-.
-├── MyTaskManager/   # GUI manager (Qt + WinAPI)
-└── MyWorker/        # console program with K worker threads, used for testing
-```
-
-**MyWorker.exe** creates a given number of threads that perform real computations and load the CPU evenly. It is a convenient target for testing the manager: priorities, affinity, suspending, and terminating threads.
 
 ## Requirements
 
