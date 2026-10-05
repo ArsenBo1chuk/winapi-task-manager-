@@ -53,7 +53,7 @@ CPU% = 100 × Δ(kernel + user time) / (Δt × number of logical CPUs)
 On an 8-core machine, one fully loaded thread therefore shows about **12.5 %**, not 100 %. This matches how Windows Task Manager and Process Explorer report CPU usage.
 
 ### Process states
-Windows does not provide a single "running / suspended" flag for a process, so ProcScope shows the process lifecycle and the result of its own actions:
+Windows doesn't provide a single "running / suspended" flag for a process, so ProcScope shows the process lifecycle and the result of its own actions:
 
 | State | Meaning |
 |---|---|
